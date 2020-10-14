@@ -1,0 +1,4 @@
+node_modules
+client/dist/bundle.js
+
+# make sure to include aws s3
