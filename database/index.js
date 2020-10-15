@@ -4,6 +4,8 @@ mongoose.connect('mongodb://localhost/review', {
   useUnifiedTopology: true
 });
 
+mongoose.set('useFindAndModify', false);
+
 let reviewSchema = mongoose.Schema({
   memberInfo: {
     memberId: Number,
@@ -47,7 +49,7 @@ var save = (review) => {
   })
 }
 
-var getReviewsByHotel = (hotelId) => {
+var getHotelReviews = (hotelId) => {
   return new Promise((resolve, reject) => {
     Review.find({"responderInfo.hotelId": hotelId}).exec((err, results) => {
       if (err) {
@@ -59,5 +61,36 @@ var getReviewsByHotel = (hotelId) => {
   })
 }
 
+var update = (updateInfo) => {
+  return new Promise((resolve, reject) => {
+    Review.findOneAndUpdate({_id: updateInfo.id},
+      {$set:{'responderInfo.responderText': updateInfo.newText}},
+      {new: true},
+      (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    })
+  })
+}
+
+var deleteRev = (reviewId) => {
+  return new Promise((resolve, reject) => {
+    Review.findOneAndRemove({_id: reviewId}, (err, results) => {
+      if (err) {
+        console.log("could not delete");
+        reject(err);
+      } else {
+        console.log("deleted");
+        resolve(results);
+      }
+    })
+  })
+}
+
 module.exports.save = save;
-module.exports.getReviewsByHotel = getReviewsByHotel;
+module.exports.getHotelReviews = getHotelReviews;
+module.exports.update = update;
+module.exports.deleteRev = deleteRev;
