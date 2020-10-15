@@ -53,6 +53,7 @@
     "jest": "^26.4.2",
     "nodemon": "^2.0.4",
     "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "cryptiles": ">=4.1.2"
   }
 }
