@@ -38,3 +38,17 @@ Read src/component/app.jsx componentDidMount function to best undestand its stru
 ## Filtering
 Filtering functions has many overlaps, and will be possible to refactor to simplify its complexity.
 Becareful of variable name changes.
+
+## CRUD API
+**Create**  
+Post request to `/hotel/:hotel` with the review details in the request body in JSON format
+
+**Read**  
+Get request to `/hotel/:hotel`, the server responds with an array of the reviews for the selected hotel
+
+**Update**  
+Put request to `/hotel/:reviewId`, including the new review text in the body of the request in the following format as JSON: { "text": "write new text here"}
+
+
+**Delete**  
+Delete request to `/hotel/:reviewId`, which deletes the review by the given Id, responds with the deleted review if it exists
