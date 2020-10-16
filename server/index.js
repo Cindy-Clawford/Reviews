@@ -21,7 +21,7 @@ app.get('/hotel/:hotel', (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log(err);
+      console.error(`ERROR getting a hotel's reviews: ${err}`);
     });
 });
 
@@ -32,7 +32,7 @@ app.get('/:id', (req, res) => {
   }
   res.sendFile(fileName, options, function(err){
     if(err) {
-      console.log('error', err);
+      console.error('error ', err);
     } else {
       console.log('file sent', fileName);
     }
@@ -47,7 +47,7 @@ app.post('/hotel/:hotel', (req, res) => {
     res.send(result);
   })
   .catch((err) => {
-    console.log(err);
+    console.error(`ERROR posting a review: ${err}`);
   });
 })
 
@@ -60,7 +60,7 @@ app.put('/hotel/:reviewId', (req, res) => {
     res.send(result);
   })
   .catch((err) => {
-    console.log(err);
+    console.error(`ERROR updating a review: ${err}`);
   });
 });
 
@@ -70,6 +70,6 @@ app.delete('/hotel/:reviewId', (req, res) => {
     res.send(result);
   })
   .catch((err) => {
-    console.log(err);
+    console.error(`ERROR deleting a review: ${err}`);
   });
 })

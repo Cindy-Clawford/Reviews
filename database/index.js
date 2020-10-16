@@ -90,7 +90,4 @@ var deleteRev = (reviewId) => {
   })
 }
 
-module.exports.save = save;
-module.exports.getHotelReviews = getHotelReviews;
-module.exports.update = update;
-module.exports.deleteRev = deleteRev;
+module.exports = { save, getHotelReviews, update, deleteRev };
