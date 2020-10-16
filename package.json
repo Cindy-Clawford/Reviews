@@ -12,7 +12,8 @@
     "start": "nodemon ./server/index.js",
     "watch": "webpack -d --watch",
     "build": "webpack --mode production",
-    "seedDB": "node database/sampleGenerator.js"
+    "seedDB": "node database/sampleGenerator.js",
+    "generateData": "node database/dataGenerator.js"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.6",
     "mysql": "^2.18.1",
+    "pg": "^8.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "styled-components": "^5.2.0"
@@ -52,6 +54,7 @@
     "jest": "^26.4.2",
     "nodemon": "^2.0.4",
     "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "cryptiles": ">=4.1.2"
   }
 }

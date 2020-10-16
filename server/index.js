@@ -13,13 +13,15 @@ app.listen(port, function() {
 });
 
 app.get('/hotel/:hotel', (req, res) => {
-  console.log('in');
-  console.log('hotel', req.params.hotel);
-  let hotel = req.params.hotel === 'root'? 'hotel0': req.params.hotel;
+  let hotel = req.params.hotel === 'global'? 'hotel0': req.params.hotel;
   let id = hotel.slice(5);
-  db.getReviewsByHotel(id)
+  console.log(`in hotel ${id}`);
+  db.getHotelReviews(id)
     .then(result => {
       res.send(result);
+    })
+    .catch((err) => {
+      console.error(`ERROR getting a hotel's reviews: ${err}`);
     });
 });
 
@@ -30,9 +32,44 @@ app.get('/:id', (req, res) => {
   }
   res.sendFile(fileName, options, function(err){
     if(err) {
-      console.log('error', err);
+      console.error('error ', err);
     } else {
       console.log('file sent', fileName);
     }
   });
 });
+
+
+app.post('/hotel/:hotel', (req, res) => {
+  let reviewInfo = req.body;
+  db.save(reviewInfo)
+  .then(result => {
+    res.send(result);
+  })
+  .catch((err) => {
+    console.error(`ERROR posting a review: ${err}`);
+  });
+})
+
+app.put('/hotel/:reviewId', (req, res) => {
+  let updateInfo = {};
+  updateInfo.id = req.params.reviewId;
+  updateInfo.newText = req.body.text;
+  db.update(updateInfo)
+  .then(result => {
+    res.send(result);
+  })
+  .catch((err) => {
+    console.error(`ERROR updating a review: ${err}`);
+  });
+});
+
+app.delete('/hotel/:reviewId', (req, res) => {
+  db.deleteRev(req.params.reviewId)
+  .then(result => {
+    res.send(result);
+  })
+  .catch((err) => {
+    console.error(`ERROR deleting a review: ${err}`);
+  });
+})
