@@ -20,9 +20,9 @@ const generate = (n) => {
 
 
 
-    var randomReviewNumber = Math.ceil(Math.random() * 5);
+    var reviewsCount = Math.floor(Math.random() * 16);
     //change back
-    for (var j = 0; j < 5; j++) {
+    for (var j = 0; j < reviewsCount; j++) {
       const randomDate = faker.date.recent(360);
       const responderDate = randomDate;
       const responderName = faker.name.findName();
@@ -59,12 +59,8 @@ const generate = (n) => {
         picture4:`https://adcobareviews.s3-us-west-1.amazonaws.com/a${Math.ceil(Math.random() * 20)}.jpg`
       };
 
-      let ratings = [0, 0, 0, 0, 0];
       let randNum = Math.ceil(Math.random() * 5)
-      for (let i = 0; i < randNum; i++) {
-        ratings[i] = 1;
-      }
-      const reviewRatings = ratings;
+      const reviewRatings = ratingGenerator(randNum);
       currHotelReview.reviewInfo = {
         reviewDate, reviewTitle, reviewText, reviewTripType, reviewPictures, reviewRatings
       };
@@ -76,6 +72,20 @@ const generate = (n) => {
   return hotels;
 }
 
-var hotels = generate(100);
+function ratingGenerator(stars, count = 0) {
+    let results = [];
+    while (count < 5) {
+        if (stars) {
+            results.push(1);
+            stars--;
+            count++;
+        } else {
+            results.push(0);
+            count++;
+        }
+    }
+    return results;
+  }
 
-module.exports = { hotels };
+module.exports = { generate };
+
