@@ -13,7 +13,7 @@
     "watch": "webpack -d --watch",
     "build": "webpack --mode production",
     "seedDB": "node database/sampleGenerator.js",
-    "generateData": "node database/dataGenerator.js"
+    "generateData": "node database/seed.js"
   },
   "repository": {
     "type": "git",
@@ -37,10 +37,11 @@
     "faker": "^5.1.0",
     "jquery": "^3.5.1",
     "mocha": "^8.1.3",
-    "moment": "^2.29.0",
+    "moment": "^2.29.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.6",
     "mysql": "^2.18.1",
+    "path": "^0.12.7",
     "performance-now": "^2.1.0",
     "pg": "^8.4.1",
     "react": "^16.13.1",

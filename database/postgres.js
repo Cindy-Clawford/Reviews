@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const { Pool } = require('pg');
 const pool = new Pool({
   user: 'azizbouland',
@@ -11,33 +14,50 @@ const pool = new Pool({
   try {
     await pool.connect();
 
-    var createTableQuery = "CREATE TABLE IF NOT EXISTS test_table(test_id serial PRIMARY KEY, name TEXT, email VARCHAR(50))";
+    var createTableQuery = "CREATE TABLE IF NOT EXISTS \
+    hotels(\
+      document_id serial PRIMARY KEY,\
+      hotelId INTEGER,\
+      responderOrg TEXT,\
+      responderPicture TEXT,\
+      responderClose TEXT,\
+      responderDate VARCHAR(11),\
+      responderName TEXT,\
+      responderText TEXT,\
+      memberId INTEGER,\
+      responderPosition TEXT,\
+      memberImg TEXT,\
+      memberUserName TEXT,\
+      memberLocation TEXT,\
+      memberContributions INTEGER,\
+      memberHelpful INTEGER,\
+      reviewDate VARCHAR(11),\
+      reviewTitle TEXT,\
+      reviewText TEXT,\
+      reviewTripType TEXT,\
+      reviewPictures TEXT,\
+      reviewRatings INTEGER\
+      )";
 
-    pool.query(createTableQuery, (err, res) => {
+      await pool.query(createTableQuery, (err, res) => {
       if (err) console.error(err);
       console.log(res);
     })
 
-    const query = {
-      text: 'INSERT INTO test_table(name, email) VALUES($1, $2)',
-      values: ['aziz', 'emailtest@gmail.com'],
-    }
+      var filePath = path.join(__dirname, '/data.txt');
 
-    pool.query(query, (err, res) => {
-      if (err) {
-        console.log(err.stack)
-      } else {
-        console.log(res.rows[0])
-      }
-    })
+      const copyQuery = `COPY hotels(hotelId,responderOrg,responderPicture,responderClose,responderDate,responderName,\
+        responderPosition,responderText,memberId,memberImg,memberUserName,memberLocation,memberContributions,memberHelpful,\
+        reviewDate,reviewTitle,reviewText,reviewTripType,reviewPictures,reviewRatings) \
+      FROM '${filePath}' \
+      DELIMITER '|' \
+      CSV HEADER`
 
-    pool
-      .query(query)
-      .then(res=> console.log(res.rows[0]))
-      .catch(e => console.error(e.stack))
+     await pool.query(copyQuery, (err, res) => {
+        if (err) console.error(err);
+        console.log(res);
+      })
 
-    const res = await pool.query('SELECT $1::text as message', ['Hello world!']);
-    console.log(res.rows[0].message);
     await pool.end();
 
   } catch(e) {

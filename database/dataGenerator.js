@@ -1,7 +1,7 @@
 const faker = require('faker');
 const moment = require('moment');
 
-// closure to keep track of total hotels made
+// closure to keep track of total hotels made for hotelId
 const generate = () => {
   var totalHotels = 0;
 
@@ -9,13 +9,9 @@ const generate = () => {
   var wrapper = (n) => {
     var hotels = [];
     for (var i = 0; i < n; i++) {
-      var currHotelReview = {
-        // responderInfo: {},
-        // memberInfo: {},
-        // reviewInfo: {}
-      };
+      var currHotelReview = {};
 
-      let travelTypes = ['Families','Couples', 'Solo', 'Business', 'Friends'];
+      let travelTypes = ['Families', 'Couples', 'Solo', 'Business', 'Friends'];
       let close = faker.company.bsAdjective();
 
       //hotel info
@@ -26,21 +22,14 @@ const generate = () => {
       const responderPicture = `https://adcobareviews.s3-us-west-1.amazonaws.com/a30.jpg`;
       const responderClose = close.charAt(0).toUpperCase() + close.slice(1);
 
-
-
-      var reviewsCount = Math.floor(Math.random() * 16);
-      //change back
+      // 0 to 15 review per hotel
+      var reviewsCount = Math.round(Math.random() * 15);
       for (var j = 0; j < reviewsCount; j++) {
         const randomDate = moment(faker.date.past(10)).format('YYYY-MM-DD');
         const responderDate = randomDate;
         const responderName = faker.name.findName();
         const responderPosition = faker.name.jobTitle();
-        const responderText = faker.lorem.paragraph(3);
-
-        // currHotelReview.responderInfo = {
-          // hotelId, responderOrg, responderPicture, responderClose,
-          // responderDate, responderName, responderPosition, responderText
-        // };
+        const responderText = faker.lorem.sentences();
 
         //member info
         const memberId = j;
@@ -50,16 +39,11 @@ const generate = () => {
         const memberContributions = Math.ceil(Math.random() * 50);
         const memberHelpful = Math.floor(Math.random() * 5);
 
-        // currHotelReview.memberInfo = {
-        //   memberId, memberImg, memberUserName, memberLocation, memberContributions, memberHelpful
-        // };
-
         //review info
-        const tType = travelTypes[Math.floor(Math.random() * 5)];
+        const reviewTripType = travelTypes[Math.round(Math.random() * 4)];
         const reviewDate = randomDate;
         const reviewTitle = faker.commerce.productAdjective();
-        const reviewText = faker.lorem.text();
-        const reviewTripType = tType;
+        const reviewText = faker.lorem.sentences();
 
         var reviewPictures = '';
         var numOfPictures = Math.floor(Math.random() * 5) + 1;
@@ -71,7 +55,6 @@ const generate = () => {
         };
 
         let reviewRatings = Math.ceil(Math.random() * 5);
-        // const reviewRatings = ratingGenerator(randNum);
 
         currHotelReview = {
           hotelId, responderOrg, responderPicture, responderClose,
@@ -79,18 +62,15 @@ const generate = () => {
           memberId, memberImg, memberUserName, memberLocation, memberContributions, memberHelpful,
           reviewDate, reviewTitle, reviewText, reviewTripType, reviewPictures, reviewRatings
         };
-        console.log(currHotelReview);
 
-        //add it to hotels
+        //adding one hotel review
         hotels.push((currHotelReview));
       }
     }
     return hotels;
   }
-
-    return wrapper;
+  // returns the inner function which has access to the hotel counter closure
+  return wrapper;
 }
 
-
 module.exports = { generate };
-
