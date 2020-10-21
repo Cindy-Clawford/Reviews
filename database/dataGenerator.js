@@ -7,9 +7,8 @@ const generate = () => {
 
   // generate n fake hotels
   var wrapper = (n) => {
-    var hotels = [];
+    var hotels = ``;
     for (var i = 0; i < n; i++) {
-      var currHotelReview = {};
 
       let travelTypes = ['Families', 'Couples', 'Solo', 'Business', 'Friends'];
       let close = faker.company.bsAdjective();
@@ -23,7 +22,7 @@ const generate = () => {
       const responderClose = close.charAt(0).toUpperCase() + close.slice(1);
 
       // 0 to 15 review per hotel
-      var reviewsCount = Math.round(Math.random() * 15);
+      var reviewsCount = Math.round(Math.random() * 5);
       for (var j = 0; j < reviewsCount; j++) {
         const randomDate = moment(faker.date.past(10)).format('YYYY-MM-DD');
         const responderDate = randomDate;
@@ -56,15 +55,15 @@ const generate = () => {
 
         let reviewRatings = Math.ceil(Math.random() * 5);
 
-        currHotelReview = {
-          hotelId, responderOrg, responderPicture, responderClose,
-          responderDate, responderName, responderPosition, responderText,
-          memberId, memberImg, memberUserName, memberLocation, memberContributions, memberHelpful,
-          reviewDate, reviewTitle, reviewText, reviewTripType, reviewPictures, reviewRatings
-        };
+        // currHotelReview = {
+        //   hotelId, responderOrg, responderPicture, responderClose,
+        //   responderDate, responderName, responderPosition, responderText,
+        //   memberId, memberImg, memberUserName, memberLocation, memberContributions, memberHelpful,
+        //   reviewDate, reviewTitle, reviewText, reviewTripType, reviewPictures, reviewRatings
+        // };
 
         //adding one hotel review
-        hotels.push((currHotelReview));
+        hotels += `${hotelId}|${responderOrg}|${responderPicture}|${responderClose}|${responderDate}|${responderName}|${responderPosition}|${responderText}|${memberId}|${memberImg}|${memberUserName}|${memberLocation}|${memberContributions}|${memberHelpful}|${reviewDate}|${reviewTitle}|${reviewText}|${reviewTripType}|${reviewPictures}|${reviewRatings}\n`;
       }
     }
     return hotels;

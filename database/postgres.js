@@ -45,6 +45,7 @@ const pool = new Pool({
     })
 
       var filePath = path.join(__dirname, '/data.txt');
+      debugger;
 
       const copyQuery = `COPY hotels(hotelId,responderOrg,responderPicture,responderClose,responderDate,responderName,\
         responderPosition,responderText,memberId,memberImg,memberUserName,memberLocation,memberContributions,memberHelpful,\
@@ -53,10 +54,13 @@ const pool = new Pool({
       DELIMITER '|' \
       CSV HEADER`
 
-     await pool.query(copyQuery, (err, res) => {
-        if (err) console.error(err);
-        console.log(res);
-      })
+    await pool.query(copyQuery, (err, res, release) => {
+      release();
+      if (err) {
+        return console.error('error copying data to Database: ', err);
+      }
+      console.log(res);
+    })
 
     await pool.end();
 

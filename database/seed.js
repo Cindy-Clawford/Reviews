@@ -11,7 +11,7 @@ const now = require('performance-now');
 function seed() {
 
   var totalEntries = 10000000;
-  var chunk = 1000;
+  var chunk = 20000;
   var runs = totalEntries / chunk;
 
   let writeStream = fs.createWriteStream('./database/data.txt');
@@ -32,11 +32,12 @@ function seed() {
       console.log(`${( ((i + 1) / runs) * 100 ).toFixed(2)}% completed`);
 
       // adds one record at a time
-      for (var h = 0; h < generatedChunk.length; h++) {
-        var hotel = generatedChunk[h];
+      // for (var h = 0; h < generatedChunk.length; h++) {
+      //   var hotel = generatedChunk[h];
 
-        writeStream.write(`${hotel.hotelId}|${hotel.responderOrg}|${hotel.responderPicture}|${hotel.responderClose}|${hotel.responderDate}|${hotel.responderName}|${hotel.responderPosition}|${hotel.responderText}|${hotel.memberId}|${hotel.memberImg}|${hotel.memberUserName}|${hotel.memberLocation}|${hotel.memberContributions}|${hotel.memberHelpful}|${hotel.reviewDate}|${hotel.reviewTitle}|${hotel.reviewText}|${hotel.reviewTripType}|${hotel.reviewPictures}|${hotel.reviewRatings}\n`);
-      }
+      //   writeStream.write(`${hotel.hotelId}|${hotel.responderOrg}|${hotel.responderPicture}|${hotel.responderClose}|${hotel.responderDate}|${hotel.responderName}|${hotel.responderPosition}|${hotel.responderText}|${hotel.memberId}|${hotel.memberImg}|${hotel.memberUserName}|${hotel.memberLocation}|${hotel.memberContributions}|${hotel.memberHelpful}|${hotel.reviewDate}|${hotel.reviewTitle}|${hotel.reviewText}|${hotel.reviewTripType}|${hotel.reviewPictures}|${hotel.reviewRatings}\n`);
+      // }
+      writeStream.write(generatedChunk);
 
       // drain every 10 chunks
       if (i > 0 && i % 10 === 0) {
