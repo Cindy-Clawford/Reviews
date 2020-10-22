@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 
 const { Pool } = require('pg');
@@ -45,7 +44,6 @@ const pool = new Pool({
     })
 
       var filePath = path.join(__dirname, '/data.txt');
-      debugger;
 
       const copyQuery = `COPY hotels(hotelId,responderOrg,responderPicture,responderClose,responderDate,responderName,\
         responderPosition,responderText,memberId,memberImg,memberUserName,memberLocation,memberContributions,memberHelpful,\

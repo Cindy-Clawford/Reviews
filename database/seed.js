@@ -3,9 +3,11 @@ const fs = require('fs');
 const now = require('performance-now');
 
 /* ------------------------------------------ notes for the future ------------------------------------------
-  instead of having the data live in 3 seperate objects, the data now lives in one container
-  reviewPictures is now a string that seperates the images by , instead of an object with picture1, picture2 etc..
-  reviewRatings is now a number such as 5 or 4 instead of an array of [1,1,1,1,1] or [1,1,1,1,0]
+  - instead of having the data live in 3 seperate objects, the data now lives in one container
+  - reviewPictures is now a string that seperates the images by , instead of an object with picture1, picture2 etc..
+  - reviewPictures, memberImg, responderPicture images have https://adcobareviews.s3-us-west-1.amazonaws.com
+    removed to reduce file size
+  - reviewRatings is now a number such as 5 or 4 instead of an array of [1,1,1,1,1] or [1,1,1,1,0]
 */
 
 function seed() {
@@ -31,12 +33,7 @@ function seed() {
       console.log(`creating a chunk of size ${chunk} took ${t1 - t0} milliseconds.`);
       console.log(`${( ((i + 1) / runs) * 100 ).toFixed(2)}% completed`);
 
-      // adds one record at a time
-      // for (var h = 0; h < generatedChunk.length; h++) {
-      //   var hotel = generatedChunk[h];
-
-      //   writeStream.write(`${hotel.hotelId}|${hotel.responderOrg}|${hotel.responderPicture}|${hotel.responderClose}|${hotel.responderDate}|${hotel.responderName}|${hotel.responderPosition}|${hotel.responderText}|${hotel.memberId}|${hotel.memberImg}|${hotel.memberUserName}|${hotel.memberLocation}|${hotel.memberContributions}|${hotel.memberHelpful}|${hotel.reviewDate}|${hotel.reviewTitle}|${hotel.reviewText}|${hotel.reviewTripType}|${hotel.reviewPictures}|${hotel.reviewRatings}\n`);
-      // }
+      // writing generated chunk to data.txt (CSV format)
       writeStream.write(generatedChunk);
 
       // drain every 10 chunks

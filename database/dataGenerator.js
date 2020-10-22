@@ -18,7 +18,7 @@ const generate = () => {
       totalHotels++;
 
       const responderOrg = faker.company.companyName();
-      const responderPicture = `https://adcobareviews.s3-us-west-1.amazonaws.com/a30.jpg`;
+      const responderPicture = `/a30.jpg`;
       const responderClose = close.charAt(0).toUpperCase() + close.slice(1);
 
       // 0 to 15 review per hotel
@@ -32,7 +32,7 @@ const generate = () => {
 
         //member info
         const memberId = j;
-        const memberImg = `https://adcobareviews.s3-us-west-1.amazonaws.com/a${Math.ceil((Math.random() * 9) + 20)}.jpg`;
+        const memberImg = `/a${Math.ceil((Math.random() * 9) + 20)}.jpg`;
         const memberUserName = faker.internet.userName();
         const memberLocation = faker.address.city();
         const memberContributions = Math.ceil(Math.random() * 50);
@@ -50,17 +50,10 @@ const generate = () => {
           if (p > 0) {
             reviewPictures += ',';
           }
-          reviewPictures += `https://adcobareviews.s3-us-west-1.amazonaws.com/a${Math.ceil(Math.random() * 20)}.jpg`;
+          reviewPictures += `/a${Math.ceil(Math.random() * 20)}.jpg`;
         };
 
         let reviewRatings = Math.ceil(Math.random() * 5);
-
-        // currHotelReview = {
-        //   hotelId, responderOrg, responderPicture, responderClose,
-        //   responderDate, responderName, responderPosition, responderText,
-        //   memberId, memberImg, memberUserName, memberLocation, memberContributions, memberHelpful,
-        //   reviewDate, reviewTitle, reviewText, reviewTripType, reviewPictures, reviewRatings
-        // };
 
         //adding one hotel review
         hotels += `${hotelId}|${responderOrg}|${responderPicture}|${responderClose}|${responderDate}|${responderName}|${responderPosition}|${responderText}|${memberId}|${memberImg}|${memberUserName}|${memberLocation}|${memberContributions}|${memberHelpful}|${reviewDate}|${reviewTitle}|${reviewText}|${reviewTripType}|${reviewPictures}|${reviewRatings}\n`;
