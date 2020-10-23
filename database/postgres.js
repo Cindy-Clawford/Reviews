@@ -15,7 +15,7 @@ const pool = new Pool({
 
     var createTableQuery = "CREATE TABLE IF NOT EXISTS \
     hotels(\
-      document_id serial PRIMARY KEY,\
+      document_id INTEGER,\
       hotelId INTEGER,\
       responderOrg TEXT,\
       responderPicture TEXT,\
@@ -45,7 +45,7 @@ const pool = new Pool({
 
       var filePath = path.join(__dirname, '/data.txt');
 
-      const copyQuery = `COPY hotels(hotelId,responderOrg,responderPicture,responderClose,responderDate,responderName,\
+      const copyQuery = `COPY hotels(id,hotelId,responderOrg,responderPicture,responderClose,responderDate,responderName,\
         responderPosition,responderText,memberId,memberImg,memberUserName,memberLocation,memberContributions,memberHelpful,\
         reviewDate,reviewTitle,reviewText,reviewTripType,reviewPictures,reviewRatings) \
       FROM '${filePath}' \

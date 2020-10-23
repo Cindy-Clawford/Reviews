@@ -39,7 +39,9 @@ client.connect()
     reviewPictures TEXT,\
     reviewRatings INT,\
     PRIMARY KEY(hotelId, id)\
-  )"
+  )\
+  WITH compression = { 'class' : 'LZ4Compressor' }\
+  "
   return client.execute(query);
 })
 
