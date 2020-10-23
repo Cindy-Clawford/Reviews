@@ -22,7 +22,7 @@ function seed() {
   var generator = generate();
 
   // Adding CSV headers
-  writeStream.write(`hotelId|responderOrg|responderPicture|responderClose|responderDate|responderName|responderPosition|responderText|memberId|memberImg|memberUserName|memberLocation|memberContributions|memberHelpful|reviewDate|reviewTitle|reviewText|reviewTripType|reviewPictures|reviewRatings\n`);
+  writeStream.write(`id|hotelId|responderOrg|responderPicture|responderClose|responderDate|responderName|responderPosition|responderText|memberId|memberImg|memberUserName|memberLocation|memberContributions|memberHelpful|reviewDate|reviewTitle|reviewText|reviewTripType|reviewPictures|reviewRatings\n`);
 
   function writeToDB() {
     // generate a collection of records
