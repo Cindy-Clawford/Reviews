@@ -1,7 +1,10 @@
+// change line to select db
+const database = 'mongo';
+
 const express = require('express');
 let app = express();
 const port = 4003;
-const db = require('../database/index.js');
+const db = require(`../database/${database}.js`);
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(express.urlencoded({extended: true}));
