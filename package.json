@@ -13,7 +13,7 @@
     "watch": "webpack -d --watch",
     "build": "webpack --mode production",
     "seedDB": "node database/sampleGenerator.js",
-    "genData": "node database/seed.js"
+    "genData": "node database/writeToFile.js"
   },
   "repository": {
     "type": "git",
