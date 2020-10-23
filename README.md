@@ -40,7 +40,7 @@ run: npm run genData.js | to generate the 100 million record csv file
 ### For a small MongoDB sample:
 -------------------------------
 All the review datas are generated from database/sampleGenerator.js.
-Read alongside database.index.js to best understand schema.
+Read alongside database/mongo.js to best understand schema.
 
 Using Database:
 1. mongo

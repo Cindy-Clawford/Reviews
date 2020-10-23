@@ -1,4 +1,4 @@
-const {generate} = require('./dataGenerator.js');
+const {generate} = require('./recordsGenerator.js');
 const fs = require('fs');
 const now = require('performance-now');
 
