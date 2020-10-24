@@ -49,7 +49,7 @@ var save = (review) => {
   })
 }
 
-var getHotelReviews = (hotelId) => {
+var read = (hotelId) => {
   return new Promise((resolve, reject) => {
     Review.find({"responderInfo.hotelId": hotelId}).exec((err, results) => {
       if (err) {
@@ -76,7 +76,7 @@ var update = (updateInfo) => {
   })
 }
 
-var deleteRev = (reviewId) => {
+var remove = (reviewId) => {
   return new Promise((resolve, reject) => {
     Review.findOneAndRemove({_id: reviewId}, (err, results) => {
       if (err) {
@@ -90,4 +90,4 @@ var deleteRev = (reviewId) => {
   })
 }
 
-module.exports = { save, getHotelReviews, update, deleteRev };
+module.exports = { save, read, update, remove };
