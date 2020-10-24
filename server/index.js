@@ -1,4 +1,4 @@
-// change line to select db
+// select a DB
 const database = 'cassandra';
 // const database = 'mongo';
 

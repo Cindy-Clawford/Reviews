@@ -41,7 +41,7 @@ var save = (review) => {
   return new Promise((resolve, reject) => {
     Review.create(review, (err, result) => {
       if (err) {
-        reject(err);
+        reject(err.stack);
       } else {
         resolve(result);
       }
@@ -53,7 +53,7 @@ var read = (hotelId) => {
   return new Promise((resolve, reject) => {
     Review.find({"responderInfo.hotelId": hotelId}).exec((err, results) => {
       if (err) {
-        reject(err);
+        reject(err.stack);
       } else {
         resolve(results);
       }
@@ -68,7 +68,7 @@ var update = (updateInfo) => {
       {new: true},
       (err, results) => {
       if (err) {
-        reject(err);
+        reject(err.stack);
       } else {
         resolve(results);
       }
@@ -80,8 +80,8 @@ var remove = (reviewId) => {
   return new Promise((resolve, reject) => {
     Review.findOneAndRemove({_id: reviewId}, (err, results) => {
       if (err) {
-        console.log("could not delete");
-        reject(err);
+        console.error("could not delete");
+        reject(err.stack);
       } else {
         console.log("deleted");
         resolve(results);
