@@ -1,5 +1,7 @@
 // change line to select db
-const database = 'mongo';
+const database = 'cassandra';
+// const database = 'mongo';
+
 
 const express = require('express');
 let app = express();
@@ -15,20 +17,22 @@ app.listen(port, function() {
   console.log(`listening on port: ${port}`);
 });
 
+// returns a list of a hotels reviews
 app.get('/hotel/:hotel', (req, res) => {
-  let hotel = req.params.hotel === 'global'? 'hotel0': req.params.hotel;
-  let id = hotel.slice(5);
+  let id = req.params.hotel === 'root'? '0': req.params.hotel;
   console.log(`in hotel ${id}`);
-  db.getHotelReviews(id)
+  db.read(id)
     .then(result => {
       res.send(result);
     })
     .catch((err) => {
       console.error(`ERROR getting a hotel's reviews: ${err}`);
+      res.end();
     });
 });
 
 app.get('/:id', (req, res) => {
+
   const fileName = 'index.html';
   const options = {
     root: __dirname + '/../client/dist'
@@ -36,12 +40,13 @@ app.get('/:id', (req, res) => {
   res.sendFile(fileName, options, function(err){
     if(err) {
       console.error('error ', err);
+      res.end();
+
     } else {
       console.log('file sent', fileName);
     }
   });
 });
-
 
 app.post('/hotel/:hotel', (req, res) => {
   let reviewInfo = req.body;
@@ -51,6 +56,7 @@ app.post('/hotel/:hotel', (req, res) => {
   })
   .catch((err) => {
     console.error(`ERROR posting a review: ${err}`);
+    res.end();
   });
 })
 
@@ -74,5 +80,6 @@ app.delete('/hotel/:reviewId', (req, res) => {
   })
   .catch((err) => {
     console.error(`ERROR deleting a review: ${err}`);
+    res.end();
   });
 })
