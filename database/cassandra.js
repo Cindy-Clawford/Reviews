@@ -1,5 +1,6 @@
 const cassandra = require('cassandra-driver');
 const path = require('path');
+const { clientFormat } = require('./utils/dataFormatter.js');
 
 const client = new cassandra.Client({
   contactPoints: ['127.0.0.1:9042'],
@@ -47,9 +48,75 @@ client.connect()
 
 .then(() => {
   console.log('success');
-  return client.shutdown();
+  // ---------------------------------- Note: ----------------------------------
+  // might have to shutdown at some point to free up connections
+  // return client.shutdown();
 })
 .catch((err) => {
   console.error('there was an error:', err);
   return client.shutdown().then(() => { throw err; });
 })
+
+var save = (review, hotelId) => {
+  // deconstruct the review, into the proper format
+  // review.hotelId = hotelId;
+  // var formattedReview = ;
+  return new Promise((resolve, reject) => {
+    // save expect a review in the format shown at the bottom
+    const query = `INSERT INTO reviews.hotels1 \
+    (id,hotelid,responderorg,responderpicture,responderclose,responderdate,respondername,responderposition,respondertext,memberid,memberimg,memberusername,memberlocation,membercontributions,memberhelpful,reviewdate,reviewtitle,reviewtext,reviewtriptype,reviewpictures,reviewratings) VALUES (${review.id},${review.hotelId},'${review.responderOrg}','${review.responderPicture}','${review.responderClose}','${review.responderDate}','${review.responderName}','${review.responderPosition}','${review.responderText}',${review.memberId},'${review.memberImg}','${review.memberUserName}','${review.memberLocation}',${review.memberContributions},${review.memberHelpful},'${review.reviewDate}','${review.reviewTitle}','${review.reviewText}','${review.reviewTripType}','${review.reviewPictures}',${review.reviewRatings})`;
+
+    debugger;
+    return client.execute(query)
+    .then((result) => {
+      debugger;
+      resolve('saved successfully!');
+    })
+    .catch((err) => {
+      reject(err.stack);
+    })
+
+  })
+}
+
+var read = (hotelId) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM reviews.hotels1 WHERE hotelid = ${hotelId}`;
+    return client.execute(query)
+    .then((results) => {
+      var reviews = results.rows;
+
+      var formattedReviews = clientFormat(reviews);
+
+      resolve(formattedReviews);
+    })
+    .catch((err) => {
+      reject('Cassandra SELECT error ', err);
+    })
+  })
+}
+
+module.exports = { save, read }
+
+// sample entry to save review
+// {"id": 99992285,
+// "hotelId": 10000000,
+// "responderOrg": "some-org",
+// "responderPicture": "/a30",
+// "responderClose": "idk what this is",
+// "responderDate": "2015-02-25",
+// "responderName": "Jaime Grimes",
+// "responderText": "some random text",
+// "memberId": "15",
+// "responderPosition": "random response",
+// "memberImg": "/a30",
+// "memberUserName": "melvin",
+// "memberLocation": "South Daim Cronus",
+// "memberContributions": 16,
+// "memberHelpful": 5,
+// "reviewDate": "2015-02-15",
+// "reviewTitle": "epic title",
+// "reviewText": "send help pls",
+// "reviewTripType": "casual",
+// "reviewPictures": "/a5.jpg,/a2.jpg,/a14.jpg,/a9.jpg",
+// "reviewRatings": 1}

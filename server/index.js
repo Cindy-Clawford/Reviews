@@ -50,7 +50,8 @@ app.get('/:id', (req, res) => {
 
 app.post('/hotel/:hotel', (req, res) => {
   let reviewInfo = req.body;
-  db.save(reviewInfo)
+  let hotelId = req.params.hotel;
+  db.save(reviewInfo, hotelId)
   .then(result => {
     res.send(result);
   })
@@ -74,7 +75,7 @@ app.put('/hotel/:reviewId', (req, res) => {
 });
 
 app.delete('/hotel/:reviewId', (req, res) => {
-  db.deleteRev(req.params.reviewId)
+  db.remove(req.params.reviewId)
   .then(result => {
     res.send(result);
   })
