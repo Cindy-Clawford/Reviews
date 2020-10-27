@@ -10,7 +10,7 @@ const now = require('performance-now');
   - reviewRatings is now a number such as 5 or 4 instead of an array of [1,1,1,1,1] or [1,1,1,1,0]
 */
 
-function writeFiles() {
+async function writeFiles() {
 
   var totalEntries = 10000000;
   var chunk = 20000;
@@ -20,16 +20,20 @@ function writeFiles() {
   // initiate a closure for hotels to keep track of total generated
   var generator = generate();
 
-  let writeStream = fs.createWriteStream(`./database/data.txt`);
+  for (var f = 1; f <= 20; f++) {
 
-  // Adding CSV headers
-  writeStream.write(`id|hotelId|responderOrg|responderPicture|responderClose|responderDate|responderName|responderPosition|responderText|memberId|memberImg|memberUserName|memberLocation|memberContributions|memberHelpful|reviewDate|reviewTitle|reviewText|reviewTripType|reviewPictures|reviewRatings\n`);
+    let writeStream = fs.createWriteStream(`./database/part${f}.txt`);
 
-  writeGeneratedRecords(runs);
+    // Adding CSV headers
+    writeStream.write(`id|hotelId|responderOrg|responderPicture|responderClose|responderDate|responderName|responderPosition|responderText|memberId|memberImg|memberUserName|memberLocation|memberContributions|memberHelpful|reviewDate|reviewTitle|reviewText|reviewTripType|reviewPictures|reviewRatings\n`);
 
-  writeStream.end();
+    await writeGeneratedRecords((runs / 20), writeStream);
+    writeStream.end();
+  }
 
-  async function writeGeneratedRecords(runs) {
+
+
+  async function writeGeneratedRecords(runs, writeStream) {
     // generate a collection of records
     for (var i = 0; i < runs; i++) {
       var t0 = now();
