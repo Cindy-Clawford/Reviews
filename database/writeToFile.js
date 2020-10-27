@@ -29,7 +29,7 @@ function writeFiles() {
 
   writeStream.end();
 
-  function writeGeneratedRecords(runs) {
+  async function writeGeneratedRecords(runs) {
     // generate a collection of records
     for (var i = 0; i < runs; i++) {
       var t0 = now();
@@ -39,13 +39,12 @@ function writeFiles() {
       console.log(`${( ((i + 1) / runs) * 100 ).toFixed(2)}% completed`);
 
       // writing generated chunk to data.txt (CSV format)
-      writeStream.write(generatedChunk);
-
-      // drain every 10 chunks
-      if (i > 0 && i % 10 === 0) {
+      if(!writeStream.write(generatedChunk)) {
+        // draining when needed
         writeStream.once('drain', writeGeneratedRecords);
         console.log('-------------------------- pool drained! --------------------------')
       }
+
     }
   }
 
