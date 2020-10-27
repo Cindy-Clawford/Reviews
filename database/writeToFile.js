@@ -10,21 +10,29 @@ const now = require('performance-now');
   - reviewRatings is now a number such as 5 or 4 instead of an array of [1,1,1,1,1] or [1,1,1,1,0]
 */
 
-function seed() {
+function writeFiles() {
 
   var totalEntries = 10000000;
   var chunk = 20000;
-  var runs = totalEntries / chunk;
 
-  let writeStream = fs.createWriteStream('./database/data.txt');
+  var runs = Math.round((0.56 * totalEntries) / chunk);
+  // var runs = (0.28 * totalEntries) / chunk;
+  // var runs = (0.16 * totalEntries) / chunk;
+
 
   // initiate a closure for hotels to keep track of total generated
   var generator = generate();
 
+  let writeStream = fs.createWriteStream(`./database/part1.txt`);
+
   // Adding CSV headers
   writeStream.write(`id|hotelId|responderOrg|responderPicture|responderClose|responderDate|responderName|responderPosition|responderText|memberId|memberImg|memberUserName|memberLocation|memberContributions|memberHelpful|reviewDate|reviewTitle|reviewText|reviewTripType|reviewPictures|reviewRatings\n`);
 
-  function writeToDB() {
+  writeGeneratedRecords(runs);
+
+  writeStream.end();
+
+  function writeGeneratedRecords(runs) {
     // generate a collection of records
     for (var i = 0; i < runs; i++) {
       var t0 = now();
@@ -38,15 +46,13 @@ function seed() {
 
       // drain every 10 chunks
       if (i > 0 && i % 10 === 0) {
-        writeStream.once('drain', writeToDB);
+        writeStream.once('drain', writeGeneratedRecords);
         console.log('-------------------------- pool drained! --------------------------')
       }
     }
   }
 
-  writeToDB();
 
-  writeStream.end();
 }
 
-seed();
+writeFiles();

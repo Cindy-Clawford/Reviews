@@ -1,5 +1,6 @@
 node_modules
 client/dist/bundle.js
 *.txt
-
+generateTestingCSVs.js
+*.pem
 # make sure to include aws s3

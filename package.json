@@ -42,6 +42,7 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.6",
     "mysql": "^2.18.1",
+    "newrelic": "^6.13.2",
     "path": "^0.12.7",
     "performance-now": "^2.1.0",
     "pg": "^8.4.1",

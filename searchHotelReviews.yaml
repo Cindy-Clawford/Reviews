@@ -1,0 +1,23 @@
+config:
+  target: "http://localhost:4003"
+  phases:
+    - duration: 10
+      arrivalRate: 10
+      name: Warm up
+    - duration: 30
+      arrivalRate: 10
+      rampTo: 200
+      name: Ramp up load
+    - duration: 1000
+      arrivalRate: 55
+      # rampTo: 10000
+      name: Sustained load
+scenarios:
+  # We define one scenario:
+  - name: "Fetching hotel Ids"
+    flow:
+      - loop:
+        - get:
+            url: "/hotel/{{$randomNumber(9000000,10000000)}}"
+        count: 15
+
