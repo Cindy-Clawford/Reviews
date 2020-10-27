@@ -15,15 +15,12 @@ function writeFiles() {
   var totalEntries = 10000000;
   var chunk = 20000;
 
-  var runs = Math.round((0.56 * totalEntries) / chunk);
-  // var runs = (0.28 * totalEntries) / chunk;
-  // var runs = (0.16 * totalEntries) / chunk;
-
+  var runs = Math.round((totalEntries) / chunk);
 
   // initiate a closure for hotels to keep track of total generated
   var generator = generate();
 
-  let writeStream = fs.createWriteStream(`./database/part1.txt`);
+  let writeStream = fs.createWriteStream(`./database/data.txt`);
 
   // Adding CSV headers
   writeStream.write(`id|hotelId|responderOrg|responderPicture|responderClose|responderDate|responderName|responderPosition|responderText|memberId|memberImg|memberUserName|memberLocation|memberContributions|memberHelpful|reviewDate|reviewTitle|reviewText|reviewTripType|reviewPictures|reviewRatings\n`);
@@ -51,7 +48,6 @@ function writeFiles() {
       }
     }
   }
-
 
 }
 
