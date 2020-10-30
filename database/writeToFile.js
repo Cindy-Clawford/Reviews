@@ -9,49 +9,51 @@ const now = require('performance-now');
     removed to reduce file size
   - reviewRatings is now a number such as 5 or 4 instead of an array of [1,1,1,1,1] or [1,1,1,1,0]
 */
+let writeStream = fs.createWriteStream(`./database/data.txt`);
 
-async function writeFiles() {
+async function writeFile(writeStream, callback) {
 
   var totalEntries = 10000000;
-  var chunk = 20000;
+  var chunk = 10;
 
-  var runs = Math.round((totalEntries) / chunk);
+  // var runs = Math.round((totalEntries) / chunk);
 
   // initiate a closure for hotels to keep track of total generated
   var generator = generate();
 
-  for (var f = 1; f <= 20; f++) {
 
-    let writeStream = fs.createWriteStream(`./database/part${f}.txt`);
-
-    // Adding CSV headers
-    writeStream.write(`id|hotelId|responderOrg|responderPicture|responderClose|responderDate|responderName|responderPosition|responderText|memberId|memberImg|memberUserName|memberLocation|memberContributions|memberHelpful|reviewDate|reviewTitle|reviewText|reviewTripType|reviewPictures|reviewRatings\n`);
-
-    await writeGeneratedRecords((runs / 20), writeStream);
-    writeStream.end();
-  }
+  // Adding CSV headers
+  writeStream.write(`id|hotelId|responderOrg|responderPicture|responderClose|responderDate|responderName|responderPosition|responderText|memberId|memberImg|memberUserName|memberLocation|memberContributions|memberHelpful|reviewDate|reviewTitle|reviewText|reviewTripType|reviewPictures|reviewRatings\n`);
 
 
 
-  async function writeGeneratedRecords(runs, writeStream) {
+  async function write() {
+    var ok = true;
     // generate a collection of records
-    for (var i = 0; i < runs; i++) {
-      var t0 = now();
-      var generatedChunk = generator(chunk);
-      var t1 = now();
-      console.log(`creating a chunk of size ${chunk} took ${t1 - t0} milliseconds.`);
-      console.log(`${( ((i + 1) / runs) * 100 ).toFixed(2)}% completed`);
+      do {
+        totalEntries -= chunk;
+        var t0 = now();
+        var generatedChunk = generator(chunk);
+        var t1 = now();
+        // console.log(`creating a chunk of size ${chunk} took ${t1 - t0} milliseconds.`);
+        if (totalEntries % 100000 === 0) {console.log(`${totalEntries} remaining`)};
 
-      // writing generated chunk to data.txt (CSV format)
-      if(!writeStream.write(generatedChunk)) {
-        // draining when needed
-        writeStream.once('drain', writeGeneratedRecords);
-        console.log('-------------------------- pool drained! --------------------------')
+        if (totalEntries === 0) {
+          writeStream.write(generatedChunk, 'utf8', callback);
+        } else {
+          ok = writeStream.write(generatedChunk, 'utf8');
+        }
+
+      } while (totalEntries > 0 && ok);
+
+      if (totalEntries > 0) {
+        await writeStream.once('drain', write);
       }
-
-    }
   }
-
+  write();
 }
 
-writeFiles();
+writeFile(writeStream, () => {
+  writeStream.end();
+  console.log('write stream ended!');
+});
