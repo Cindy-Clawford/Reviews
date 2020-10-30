@@ -3,7 +3,7 @@ const path = require('path');
 const { clientFormat } = require('./utils/dataFormatter.js');
 
 const client = new cassandra.Client({
-  contactPoints: ['127.0.0.1:9042'],
+  contactPoints: ['157.175.2.94:9042'],
   // host: 'localhost',
   // port: '9160',
   localDataCenter: 'datacenter1'
